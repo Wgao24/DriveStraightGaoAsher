@@ -8,8 +8,9 @@ class driveStraight():
         self.drivetrain = Drivetrain
         self.leftEncoder = Encoder(4, 5)
         self.rightEncoder = Encoder(6, 7)
-        self.leftEncoder.setDistancePerPulse(0.01828668723656)
-        self.rightEncoder.setDistancePerPulse(0.01828668723656)
+       # 0.00015271630954950385
+        self.leftEncoder.setDistancePerPulse(0.015271630954950385)
+        self.rightEncoder.setDistancePerPulse(0.015271630954950385)
         self.speed = 1
         self.drivetrain.drive(0, self.speed)
 
@@ -17,25 +18,20 @@ class driveStraight():
         self.drivetrain.drive(0, .75)
     def run(self):
         #self.drivetrain.drive(0,1)
-        #if(self.leftEncoder.getDistance()>4 or self.rightEncoder.getDistance()>4 ):
-         #   self.drivetrain.drive(0, 0)
-         #   pass#gas
+        if(self.leftEncoder.getDistance()>200 or self.rightEncoder.getDistance()>400 ):
+            self.drivetrain.drive(0, 0)
+            return
 
-        #leftRate = self.leftEncoder.getRate()
-        #rightRate = self.rightEncoder.getRate()
         leftRate = self.leftEncoder.getDistance()
         rightRate = self.rightEncoder.getDistance()
-        rateDiff = rightRate-leftRate
-        #rateDiff = rateDiff/50
-        #rateDiff = rateDiff**3
-        #rateDiff = rateDiff * 5
+        rateDiff = rightRate-leftRate #get the difference in the distances run
         rateDiff = rateDiff /6
-        if rateDiff > .3:
+        if rateDiff > .3:#cap the difference so the ROMI does not osilate out of control
 
             rateDiff = .3
         if rateDiff < -.3:
             rateDiff = -.3
 
         print(f"left rate: {leftRate} right rate: {rightRate} diff: {rateDiff}")
-        self.drivetrain.drive(rateDiff,self.speed/1.5)#Goes right when the thing is positive?
+        self.drivetrain.drive(rateDiff,self.speed/1.5)#turn by the post processed differnces
         pass
