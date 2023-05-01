@@ -1,17 +1,11 @@
 import wpilib
 import os
-from wpilib import TimedRobot, Spark, Encoder, Joystick
-from wpilib.drive import DifferentialDrive
-from drivetrain import Drivetrain
-from drivestraight import driveStraight
+from wpilib import TimedRobot
+from robotContainer import RobotContainer
 class MyRobot(TimedRobot):
 
     def robotInit(self):
-        self.controller = Joystick(0)
-        '''This method is called as the robot turns on and is often used to setup the
-        joysticks and other presets.'''
-        self.drivetrain = Drivetrain()
-        self.driveStraight = driveStraight(self.drivetrain)
+        self.container = RobotContainer()
 
         pass
     def robotPeriodic(self):
@@ -20,20 +14,24 @@ class MyRobot(TimedRobot):
         pass
     def autonomousInit(self):
         '''This is called once when the robot enters autonomous mode.'''
-
+        self.auto = self.container.get_autonomous()
         pass
     def autonomousPeriodic(self):
-        self.driveStraight.run()
+        self.auto.run()
         '''This is called every cycle while the robot is in autonomous.'''
         pass
+    def autonomousExit(self) -> None:
+        self.container.drivetrain.resetGyro()
+        self.container.drivetrain.reset()
     def teleopInit(self):
         '''This is called once at the start of Teleop.'''
         pass
+
     def teleopPeriodic(self):
         #self.drivetrain.drive(0, 1)
-        forward = self.controller.getRawAxis(0)
-        rotate = self.controller.getRawAxis(1)
-        self.drivetrain.drive(rotate, forward)
+        forward = self.container.controller.getRawAxis(0)
+        rotate = self.container.controller.getRawAxis(1)
+        self.container.drivetrain.drive(rotate, forward)
         print(f"rotate:{rotate} forward:{forward}")
         '''This is called once every cycle during Teleop'''
         pass

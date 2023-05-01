@@ -3,7 +3,7 @@ from wpilib import TimedRobot, Spark, Encoder, Joystick
 from wpilib.drive import DifferentialDrive
 from drivetrain import Drivetrain
 class driveStraight():
-    def __init__(self, Drivetrain):
+    def __init__(self, Drivetrain, distance):
         self.controller = Joystick(0)
         self.drivetrain = Drivetrain
         self.leftEncoder = Encoder(4, 5)
@@ -13,12 +13,12 @@ class driveStraight():
         self.rightEncoder.setDistancePerPulse(0.015271630954950385)
         self.speed = 1
         self.drivetrain.drive(0, self.speed)
-
+        self.distance = distance
     def spinUp(self):
         self.drivetrain.drive(0, .75)
     def run(self):
         #self.drivetrain.drive(0,1)
-        if(self.leftEncoder.getDistance()>200 or self.rightEncoder.getDistance()>400 ):
+        if(self.leftEncoder.getDistance()>(self.distance*200) or self.rightEncoder.getDistance()>400 ):
             self.drivetrain.drive(0, 0)
             return
 
@@ -27,7 +27,6 @@ class driveStraight():
         rateDiff = rightRate-leftRate #get the difference in the distances run
         rateDiff = rateDiff /6
         if rateDiff > .3:#cap the difference so the ROMI does not osilate out of control
-
             rateDiff = .3
         if rateDiff < -.3:
             rateDiff = -.3
