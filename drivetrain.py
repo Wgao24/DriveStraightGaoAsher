@@ -16,6 +16,11 @@ class Drivetrain:
         """returns the yaw of the robot in degrees"""
         return self.gyro.getAngleZ()
         pass#gas
+
+    def getGyroPitch(self):
+        """returns the yaw of the robot in degrees"""
+        return self.gyro.getAngleY()
+        pass#gas
     def resetGyro(self):
         """resets angles to all be zero"""#this allows people to see what the fuction does as a preview when they use it in another class
         self.gyro.reset()

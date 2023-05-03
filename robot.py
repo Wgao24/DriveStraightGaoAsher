@@ -17,7 +17,7 @@ class MyRobot(TimedRobot):
         self.auto = self.container.get_autonomous()
         pass
     def autonomousPeriodic(self):
-        self.auto.run()
+        self.auto.run() # this .run function is shared by both drivestraight and gyroTurn, so it is possible to do both
         '''This is called every cycle while the robot is in autonomous.'''
         pass
     def autonomousExit(self) -> None:
